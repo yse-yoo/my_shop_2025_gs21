@@ -1,16 +1,17 @@
 <?php
-// env.php を読み込み
 require_once '../app.php';
 
 use App\Models\Item;
 
-// TODO: idから商品を取得
+// 商品IDを取得（GET）
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 $item = new Item();
-$selectItem = [];
+$selectItem = $item->find($id);
 
-// 商品が選択されていない場合は、商品一覧にリダイレクト
+// 商品が見つからない場合は一覧へ
 if (!$selectItem) {
     header('Location: ./');
+    exit;
 }
 ?>
 
@@ -26,45 +27,45 @@ if (!$selectItem) {
         <h2 class="text-2xl font-bold mb-6 text-center">商品編集</h2>
 
         <form action="admin_item/update.php" method="post" class="space-y-6 bg-white p-6 rounded-lg shadow">
-            <input type="hidden" name="id" value="<?= @$selectItem['id'] ?>">
+            <input type="hidden" name="id" value="<?= htmlspecialchars($selectItem['id']) ?>">
 
             <!-- 商品コード -->
             <div>
                 <label for="code" class="block text-sm font-medium mb-1">商品コード</label>
-                <input id="code" type="text" name="code" value="<?= @$selectItem['code'] ?>"
+                <input id="code" type="text" name="code" value="<?= htmlspecialchars($selectItem['code']) ?>"
                     class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
                 <?php if (!empty($errors['code'])): ?>
-                    <p class="text-red-500 text-sm mt-1"><?= $errors['code'] ?></p>
+                    <p class="text-red-500 text-sm mt-1"><?= htmlspecialchars($errors['code']) ?></p>
                 <?php endif ?>
             </div>
 
             <!-- 商品名 -->
             <div>
                 <label for="name" class="block text-sm font-medium mb-1">商品名</label>
-                <input id="name" type="text" name="name" value="<?= @$selectItem['name'] ?>"
+                <input id="name" type="text" name="name" value="<?= htmlspecialchars($selectItem['name']) ?>"
                     class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
                 <?php if (!empty($errors['name'])): ?>
-                    <p class="text-red-500 text-sm mt-1"><?= $errors['name'] ?></p>
+                    <p class="text-red-500 text-sm mt-1"><?= htmlspecialchars($errors['name']) ?></p>
                 <?php endif ?>
             </div>
 
             <!-- 価格 -->
             <div>
                 <label for="price" class="block text-sm font-medium mb-1">価格</label>
-                <input id="price" type="text" name="price" value="<?= @$selectItem['price'] ?>"
+                <input id="price" type="text" name="price" value="<?= htmlspecialchars($selectItem['price']) ?>"
                     class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
                 <?php if (!empty($errors['price'])): ?>
-                    <p class="text-red-500 text-sm mt-1"><?= $errors['price'] ?></p>
+                    <p class="text-red-500 text-sm mt-1"><?= htmlspecialchars($errors['price']) ?></p>
                 <?php endif ?>
             </div>
 
             <!-- 在庫 -->
             <div>
                 <label for="stock" class="block text-sm font-medium mb-1">在庫</label>
-                <input id="stock" type="text" name="stock" value="<?= @$selectItem['stock'] ?>"
+                <input id="stock" type="text" name="stock" value="<?= htmlspecialchars($selectItem['stock']) ?>"
                     class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
                 <?php if (!empty($errors['stock'])): ?>
-                    <p class="text-red-500 text-sm mt-1"><?= $errors['stock'] ?></p>
+                    <p class="text-red-500 text-sm mt-1"><?= htmlspecialchars($errors['stock']) ?></p>
                 <?php endif ?>
             </div>
 
@@ -80,7 +81,7 @@ if (!$selectItem) {
 
         <!-- 削除ボタン -->
         <form action="admin_item/delete.php" method="post" class="mt-6 text-center">
-            <input type="hidden" name="id" value="<?= $selectItem['id'] ?>">
+            <input type="hidden" name="id" value="<?= htmlspecialchars($selectItem['id']) ?>">
             <button type="submit"
                 class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg text-sm"
                 onclick="return confirm('削除してよいですか？')">
