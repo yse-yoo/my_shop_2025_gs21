@@ -5,6 +5,7 @@ require_once '../app.php';
 use App\Models\Item;
 
 // TODO: idから商品を取得
+$item = new Item();
 $selectItem = [];
 
 // 商品が選択されていない場合は、商品一覧にリダイレクト
